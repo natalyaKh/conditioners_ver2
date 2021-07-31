@@ -18,6 +18,9 @@ public class AuthorityEntity extends BaseEntity{
         this.name = name;
     }
 
+    public AuthorityEntity(AuthorityEntity authorityEntity) {
+    }
+
     public AuthorityEntity() {
     }
 

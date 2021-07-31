@@ -41,6 +41,7 @@ public class InitialRolesAuthoritiesSetup {
         AuthorityEntity writeAuthority = createAuthority(Authorities.WRITE.name());
         AuthorityEntity deleteAuthority = createAuthority(Authorities.DELETE.name());
 
+
         RoleEntity workerRole = createRole(Roles.ROLE_WORKER.name(), Arrays.asList(
             readAuthority));
         RoleEntity adminRole = createRole(Roles.ROLE_ADMIN.name(), Arrays.asList(readAuthority,

@@ -23,9 +23,9 @@ public class UserEntity extends BaseEntity{
      * in this project
      */
     @Column(nullable = false)
-    Boolean deleted;
+    Boolean deleted = false;
     @Column(nullable = false)
-    private Boolean confirmEmail = true;
+    private Boolean confirmEmail = false;
 
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn
         (name = "users_id", referencedColumnName = "id"))
