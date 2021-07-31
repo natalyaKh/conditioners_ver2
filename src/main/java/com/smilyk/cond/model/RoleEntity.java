@@ -25,6 +25,10 @@ public class RoleEntity extends BaseEntity {
     public RoleEntity() {
     }
 
+    public RoleEntity(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
