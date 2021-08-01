@@ -23,7 +23,6 @@ public class AdminUserController {
     ValidationService validService;
 
     // TODO: 01/08/2021 Admin only
-    // TODO: 31/07/2021 Validation - check if user exist in DB - return error
     @SneakyThrows
     @PostMapping
     public ResponseEntity createUser(@RequestBody UserDto userDto){

@@ -1,8 +1,10 @@
 package com.smilyk.cond.service.admin;
 
 import com.smilyk.cond.InitialRolesAuthoritiesSetup;
+import com.smilyk.cond.constants.LoggerConstants;
 import com.smilyk.cond.dto.ResponseUserDto;
 import com.smilyk.cond.dto.UserDto;
+import com.smilyk.cond.exceptions.ObjectNotFoundException;
 import com.smilyk.cond.model.RoleEntity;
 import com.smilyk.cond.model.UserEntity;
 import com.smilyk.cond.repo.RoleRepository;
@@ -39,17 +41,22 @@ public class AdminUserServiceImpl implements AdminUserService {
         userEntity.setUuidUser(UUID.randomUUID().toString());
         RoleEntity roleEntity = roleRepository.findByName(userDto.getRoles().name());
         if(roleEntity.equals(null)){
-            // TODO: 31/07/2021 exception
+            LOGGER.warn(LoggerConstants.ROLE + userDto.getRoles().name() +
+               LoggerConstants.NOT_FOUND_IN_DB);
+           throw new ObjectNotFoundException(LoggerConstants.ROLE + userDto.getRoles().name() +
+               LoggerConstants.NOT_FOUND_IN_DB);
         }
         ArrayList<RoleEntity> roles = new ArrayList<>();
         roles.add(roleEntity);
         userEntity.setRoles(roles);
         UserEntity restoredUser = userRepository.save(userEntity);
         if(restoredUser.equals(null)){
-            // TODO: 31/07/2021 throw exception
+            LOGGER.warn(LoggerConstants.SOMETHING_WAS_WRONG + " during saving user");
+            throw new ObjectNotFoundException(LoggerConstants.SOMETHING_WAS_WRONG + " during saving user");
         }
-        LOGGER.info("User with name: " + userDto.getFirstName() + " and with roles: " +
-            userDto.getRoles() + " was created successfully");
+        LOGGER.info(LoggerConstants.USER_WITH_NAME + userDto.getFirstName() + " and "  +
+            LoggerConstants.USER_WITH_ROLES +
+            userDto.getRoles() + LoggerConstants.CREATED);
         ResponseUserDto responseUserDto = modelMapper.map(restoredUser, ResponseUserDto.class);
         responseUserDto.setRoles(restoredUser.getRoles().iterator().next().getName());
         return responseUserDto;
