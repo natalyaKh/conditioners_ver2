@@ -1,4 +1,4 @@
-package com.smilyk.cond.service;
+package com.smilyk.cond.service.admin;
 
 import com.smilyk.cond.InitialRolesAuthoritiesSetup;
 import com.smilyk.cond.dto.ResponseUserDto;
@@ -17,15 +17,15 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
-public class UserServiceImpl implements UserService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+public class AdminUserServiceImpl implements AdminUserService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminUserServiceImpl.class);
     ModelMapper modelMapper = new ModelMapper();
     final UserEntityRepository userRepository;
     final RoleRepository roleRepository;
     final BCryptPasswordEncoder bCryptPasswordEncoder;
     final InitialRolesAuthoritiesSetup initialUsersSetup;
 
-    public UserServiceImpl(UserEntityRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder, InitialRolesAuthoritiesSetup initialUsersSetup) {
+    public AdminUserServiceImpl(UserEntityRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder, InitialRolesAuthoritiesSetup initialUsersSetup) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
