@@ -24,8 +24,33 @@ public class UserEntity extends BaseEntity{
      */
     @Column(nullable = false)
     Boolean deleted = false;
+
+    public UserEntity(String uuidUser, String firstName, String secondName, String userEmail, String password, Boolean deleted,
+                      Boolean confirmEmail, Boolean blocked, Collection<RoleEntity> roles) {
+        this.uuidUser = uuidUser;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.userEmail = userEmail;
+        this.password = password;
+        this.deleted = deleted;
+        this.confirmEmail = confirmEmail;
+        this.blocked = blocked;
+        this.roles = roles;
+    }
+
     @Column(nullable = false)
     private Boolean confirmEmail = false;
+
+    public Boolean getBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        this.blocked = blocked;
+    }
+
+    @Column(nullable = false)
+    private Boolean blocked = false;
 
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn
         (name = "users_id", referencedColumnName = "id"))
@@ -113,14 +138,4 @@ public class UserEntity extends BaseEntity{
     public UserEntity() {
     }
 
-    public UserEntity(String uuidUser, String firstName, String secondName, String userEmail, String password, Boolean deleted, Boolean confirmEmail, Collection<RoleEntity> roles) {
-        this.uuidUser = uuidUser;
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.userEmail = userEmail;
-        this.password = password;
-        this.deleted = deleted;
-        this.confirmEmail = confirmEmail;
-        this.roles = roles;
-    }
 }

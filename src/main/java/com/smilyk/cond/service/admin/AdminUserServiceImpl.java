@@ -2,6 +2,7 @@ package com.smilyk.cond.service.admin;
 
 import com.smilyk.cond.InitialRolesAuthoritiesSetup;
 import com.smilyk.cond.constants.LoggerConstants;
+import com.smilyk.cond.dto.ResponseDeleteBlockedUserDto;
 import com.smilyk.cond.dto.ResponseUserDto;
 import com.smilyk.cond.dto.UserDto;
 import com.smilyk.cond.exceptions.ObjectNotFoundException;
@@ -51,7 +52,6 @@ public class AdminUserServiceImpl implements AdminUserService {
         userEntity.setRoles(roles);
         UserEntity restoredUser = userRepository.save(userEntity);
         if(restoredUser.equals(null)){
-            LOGGER.warn(LoggerConstants.SOMETHING_WAS_WRONG + " during saving user");
             throw new ObjectNotFoundException(LoggerConstants.SOMETHING_WAS_WRONG + " during saving user");
         }
         LOGGER.info(LoggerConstants.USER_WITH_NAME + userDto.getFirstName() + " and "  +
@@ -60,5 +60,23 @@ public class AdminUserServiceImpl implements AdminUserService {
         ResponseUserDto responseUserDto = modelMapper.map(restoredUser, ResponseUserDto.class);
         responseUserDto.setRoles(restoredUser.getRoles().iterator().next().getName());
         return responseUserDto;
+    }
+
+    @Override
+    public ResponseDeleteBlockedUserDto deleteUser(UserEntity userEntity) {
+        userEntity.setDeleted(true);
+        UserEntity restoredUser = userRepository.save(userEntity);
+        LOGGER.info(LoggerConstants.USER_WITH_EMAIL + userEntity.getUserEmail()+
+            LoggerConstants.DELETED);
+      return  modelMapper.map(restoredUser, ResponseDeleteBlockedUserDto.class);
+    }
+
+    @Override
+    public ResponseDeleteBlockedUserDto blockUser(UserEntity userEntity) {
+        userEntity.setBlocked(true);
+        UserEntity restoredUser = userRepository.save(userEntity);
+        LOGGER.info(LoggerConstants.USER_WITH_EMAIL + userEntity.getUserEmail()+
+            LoggerConstants.BLOCKED);
+        return  modelMapper.map(restoredUser, ResponseDeleteBlockedUserDto.class);
     }
 }

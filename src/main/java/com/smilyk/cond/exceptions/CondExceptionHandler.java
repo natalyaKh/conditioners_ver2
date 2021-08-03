@@ -1,5 +1,9 @@
 package com.smilyk.cond.exceptions;
 
+import com.smilyk.cond.constants.LoggerConstants;
+import com.smilyk.cond.service.admin.AdminUserServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -15,10 +19,13 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class CondExceptionHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CondExceptionHandler.class);
+
     //   all exceptions
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ErrorDto exceptionHandler(Exception ex) {
+        LOGGER.warn(ex.getMessage());
         return ErrorDto.builder()
             .date(LocalDateTime.now())
             .error(ex.getMessage())
@@ -49,6 +56,7 @@ public class CondExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(InvalidUserException.class)
     public ErrorDto handleNotUniqueUserException(InvalidUserException ex) {
+        LOGGER.warn(ex.getMessage());
         return ErrorDto.builder()
             .date(LocalDateTime.now())
             .error(ex.getMessage())
@@ -60,6 +68,7 @@ public class CondExceptionHandler {
     @ResponseStatus(HttpStatus.GONE)
     @ExceptionHandler(ObjectNotFoundException.class)
     public ErrorDto handleNotUniqueUserException(ObjectNotFoundException ex) {
+        LOGGER.warn(ex.getMessage());
         return ErrorDto.builder()
             .date(LocalDateTime.now())
             .error(ex.getMessage())

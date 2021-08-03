@@ -7,4 +7,9 @@ import java.util.Optional;
 
 public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> getByUserEmail(String userEmail);
+
+    Optional<UserEntity> getUserByUuidUserAndDeletedAndBlocked(String userUuid,
+                                                           boolean deleted, boolean blocked);
+
+    Optional<Object> findUserByUuidUserAndDeletedAndBlocked(String userUuid, boolean b, boolean b1);
 }
