@@ -3,6 +3,7 @@ package com.smilyk.cond.controllers;
 import com.smilyk.cond.dto.ResponseDeleteBlockedUserDto;
 import com.smilyk.cond.dto.ResponseUserDto;
 import com.smilyk.cond.dto.UserDto;
+import com.smilyk.cond.enums.Roles;
 import com.smilyk.cond.model.UserEntity;
 import com.smilyk.cond.service.admin.AdminUserService;
 import com.smilyk.cond.service.valid.ValidationService;
@@ -41,6 +42,13 @@ public class AdminUserController {
     public ResponseEntity blockUser(@PathVariable String userUuid){
         UserEntity userEntity = validService.checkIfUserExists(userUuid);
         ResponseDeleteBlockedUserDto restoredUserDto = userService.blockUser(userEntity);
+        return new ResponseEntity(restoredUserDto, HttpStatus.OK);
+    }
+
+    @PutMapping("/role/add/{userUuid}/{role}")
+    public ResponseEntity addRoleToUser(@PathVariable String userUuid, @PathVariable Roles role){
+        UserEntity userEntity = validService.checkIfUserExists(userUuid);
+        ResponseUserDto restoredUserDto = userService.addRoleToUser(userEntity, role);
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
     }
 }

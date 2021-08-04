@@ -15,4 +15,6 @@ public abstract class LoggerConstants {
     public static final  String BLOCKED = " was blocked successfully";
 
     public static final String SOMETHING_WAS_WRONG = " something was wrong ";
+    public static final String WAS_ADD = " was add ";
+    public static final String HAS_ROLE = " has role: ";
 }

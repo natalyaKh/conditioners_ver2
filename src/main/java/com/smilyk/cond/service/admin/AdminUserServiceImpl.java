@@ -5,6 +5,8 @@ import com.smilyk.cond.constants.LoggerConstants;
 import com.smilyk.cond.dto.ResponseDeleteBlockedUserDto;
 import com.smilyk.cond.dto.ResponseUserDto;
 import com.smilyk.cond.dto.UserDto;
+import com.smilyk.cond.enums.Roles;
+import com.smilyk.cond.exceptions.InvalidUserException;
 import com.smilyk.cond.exceptions.ObjectNotFoundException;
 import com.smilyk.cond.model.RoleEntity;
 import com.smilyk.cond.model.UserEntity;
@@ -15,9 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminUserServiceImpl implements AdminUserService {
@@ -41,24 +45,26 @@ public class AdminUserServiceImpl implements AdminUserService {
         userEntity.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         userEntity.setUuidUser(UUID.randomUUID().toString());
         RoleEntity roleEntity = roleRepository.findByName(userDto.getRoles().name());
-        if(roleEntity.equals(null)){
+        if (roleEntity.equals(null)) {
             LOGGER.warn(LoggerConstants.ROLE + userDto.getRoles().name() +
-               LoggerConstants.NOT_FOUND_IN_DB);
-           throw new ObjectNotFoundException(LoggerConstants.ROLE + userDto.getRoles().name() +
-               LoggerConstants.NOT_FOUND_IN_DB);
+                LoggerConstants.NOT_FOUND_IN_DB);
+            throw new ObjectNotFoundException(LoggerConstants.ROLE + userDto.getRoles().name() +
+                LoggerConstants.NOT_FOUND_IN_DB);
         }
         ArrayList<RoleEntity> roles = new ArrayList<>();
         roles.add(roleEntity);
         userEntity.setRoles(roles);
         UserEntity restoredUser = userRepository.save(userEntity);
-        if(restoredUser.equals(null)){
+        if (restoredUser.equals(null)) {
             throw new ObjectNotFoundException(LoggerConstants.SOMETHING_WAS_WRONG + " during saving user");
         }
-        LOGGER.info(LoggerConstants.USER_WITH_NAME + userDto.getFirstName() + " and "  +
+        LOGGER.info(LoggerConstants.USER_WITH_NAME + userDto.getFirstName() + " and " +
             LoggerConstants.USER_WITH_ROLES +
             userDto.getRoles() + LoggerConstants.CREATED);
         ResponseUserDto responseUserDto = modelMapper.map(restoredUser, ResponseUserDto.class);
-        responseUserDto.setRoles(restoredUser.getRoles().iterator().next().getName());
+        List<String> usersRoles = restoredUser.getRoles().stream().map(RoleEntity::getName)
+            .collect(Collectors.toList());
+        responseUserDto.setRoles(usersRoles);
         return responseUserDto;
     }
 
@@ -66,17 +72,46 @@ public class AdminUserServiceImpl implements AdminUserService {
     public ResponseDeleteBlockedUserDto deleteUser(UserEntity userEntity) {
         userEntity.setDeleted(true);
         UserEntity restoredUser = userRepository.save(userEntity);
-        LOGGER.info(LoggerConstants.USER_WITH_EMAIL + userEntity.getUserEmail()+
+        LOGGER.info(LoggerConstants.USER_WITH_EMAIL + userEntity.getUserEmail() +
             LoggerConstants.DELETED);
-      return  modelMapper.map(restoredUser, ResponseDeleteBlockedUserDto.class);
+        return modelMapper.map(restoredUser, ResponseDeleteBlockedUserDto.class);
     }
 
     @Override
     public ResponseDeleteBlockedUserDto blockUser(UserEntity userEntity) {
         userEntity.setBlocked(true);
         UserEntity restoredUser = userRepository.save(userEntity);
-        LOGGER.info(LoggerConstants.USER_WITH_EMAIL + userEntity.getUserEmail()+
+        LOGGER.info(LoggerConstants.USER_WITH_EMAIL + userEntity.getUserEmail() +
             LoggerConstants.BLOCKED);
-        return  modelMapper.map(restoredUser, ResponseDeleteBlockedUserDto.class);
+        return modelMapper.map(restoredUser, ResponseDeleteBlockedUserDto.class);
+    }
+
+    @Override
+    public ResponseUserDto addRoleToUser(UserEntity userEntity, Roles role) {
+        RoleEntity roleEntity = roleRepository.findByName(role.name());
+        UserEntity restoredUser = new UserEntity();
+        if (roleEntity.equals(null)) {
+            throw new ObjectNotFoundException(LoggerConstants.ROLE + role.name() +
+                LoggerConstants.NOT_FOUND_IN_DB);
+        }
+        Collection<RoleEntity> roles = userEntity.getRoles();
+        if (roles.contains(roleEntity)) {
+            throw new InvalidUserException(LoggerConstants.USER_WITH_NAME + userEntity.getFirstName()
+            + " " + userEntity.getSecondName() + LoggerConstants.HAS_ROLE + role.name());
+        }
+        roles.add(roleEntity);
+        userEntity.setRoles(roles);
+        restoredUser = userRepository.save(userEntity);
+        if (restoredUser.equals(null)) {
+            throw new ObjectNotFoundException(LoggerConstants.SOMETHING_WAS_WRONG + " during saving role to user");
+        }
+        LOGGER.info(LoggerConstants.ROLE + role.name() + LoggerConstants.WAS_ADD +
+            LoggerConstants.USER_WITH_NAME +
+            restoredUser.getFirstName() + " " + restoredUser.getSecondName());
+        ResponseUserDto responseUserDto = modelMapper.map(restoredUser, ResponseUserDto.class);
+        List<String> usersRoles = restoredUser.getRoles().stream().map(RoleEntity::getName)
+            .collect(Collectors.toList());
+        responseUserDto.setRoles(usersRoles);
+        return responseUserDto;
     }
 }
