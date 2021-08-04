@@ -55,17 +55,11 @@ public class AdminUserServiceImpl implements AdminUserService {
         roles.add(roleEntity);
         userEntity.setRoles(roles);
         UserEntity restoredUser = userRepository.save(userEntity);
-        if (restoredUser.equals(null)) {
-            throw new ObjectNotFoundException(LoggerConstants.SOMETHING_WAS_WRONG + " during saving user");
-        }
+        checkSavingUserWithChanges(restoredUser, " during saving user");
         LOGGER.info(LoggerConstants.USER_WITH_NAME + userDto.getFirstName() + " and " +
             LoggerConstants.USER_WITH_ROLES +
             userDto.getRoles() + LoggerConstants.CREATED);
-        ResponseUserDto responseUserDto = modelMapper.map(restoredUser, ResponseUserDto.class);
-        List<String> usersRoles = restoredUser.getRoles().stream().map(RoleEntity::getName)
-            .collect(Collectors.toList());
-        responseUserDto.setRoles(usersRoles);
-        return responseUserDto;
+        return  userEntityToResponseUserDto(restoredUser);
     }
 
     @Override
@@ -102,16 +96,46 @@ public class AdminUserServiceImpl implements AdminUserService {
         roles.add(roleEntity);
         userEntity.setRoles(roles);
         restoredUser = userRepository.save(userEntity);
-        if (restoredUser.equals(null)) {
-            throw new ObjectNotFoundException(LoggerConstants.SOMETHING_WAS_WRONG + " during saving role to user");
-        }
+        checkSavingUserWithChanges(restoredUser, " during saving role to user");
         LOGGER.info(LoggerConstants.ROLE + role.name() + LoggerConstants.WAS_ADD +
             LoggerConstants.USER_WITH_NAME +
             restoredUser.getFirstName() + " " + restoredUser.getSecondName());
+        return  userEntityToResponseUserDto(restoredUser);
+    }
+
+    @Override
+    public ResponseUserDto deleteRoleFromUser(UserEntity userEntity, Roles role) {
+        RoleEntity roleEntity = roleRepository.findByName(role.name());
+        if (roleEntity.equals(null)) {
+            throw new ObjectNotFoundException(LoggerConstants.ROLE + role.name() +
+                LoggerConstants.NOT_FOUND_IN_DB);
+        }
+        Collection<RoleEntity> roles = userEntity.getRoles();
+        if (!roles.contains(roleEntity)){
+            throw new InvalidUserException(LoggerConstants.USER_WITH_NAME + userEntity.getFirstName()
+                + " " + userEntity.getSecondName() + LoggerConstants.HAS_NO_ROLE + role.name());
+        }
+        roles.remove(roleEntity);
+        userEntity.setRoles(roles);
+        UserEntity restoredUser = userRepository.save(userEntity);
+        checkSavingUserWithChanges(restoredUser, " during saving role to user");
+        LOGGER.info(LoggerConstants.ROLE + role.name() + LoggerConstants.WAS_DELETED +
+            LoggerConstants.USER_WITH_NAME +
+            restoredUser.getFirstName() + " " + restoredUser.getSecondName());
+        return  userEntityToResponseUserDto(restoredUser);
+
+    }
+    private ResponseUserDto userEntityToResponseUserDto(UserEntity restoredUser) {
         ResponseUserDto responseUserDto = modelMapper.map(restoredUser, ResponseUserDto.class);
         List<String> usersRoles = restoredUser.getRoles().stream().map(RoleEntity::getName)
             .collect(Collectors.toList());
         responseUserDto.setRoles(usersRoles);
         return responseUserDto;
+    }
+
+    private void checkSavingUserWithChanges(UserEntity restoredUser, String s) {
+        if (restoredUser.equals(null)) {
+            throw new ObjectNotFoundException(LoggerConstants.SOMETHING_WAS_WRONG + s);
+        }
     }
 }

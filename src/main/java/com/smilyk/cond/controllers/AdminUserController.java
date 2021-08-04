@@ -25,30 +25,38 @@ public class AdminUserController {
     // TODO: 01/08/2021 Admin only
     @SneakyThrows
     @PostMapping
-    public ResponseEntity createUser(@RequestBody UserDto userDto){
+    public ResponseEntity createUser(@RequestBody UserDto userDto) {
         validService.checkUniqueUser(userDto.getUserEmail());
         ResponseUserDto restoredUserDto = userService.createUser(userDto);
         return new ResponseEntity(restoredUserDto, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{userUuid}")
-    public ResponseEntity deleteUser(@PathVariable String userUuid){
+    public ResponseEntity deleteUser(@PathVariable String userUuid) {
         UserEntity userEntity = validService.checkIfUserExists(userUuid);
         ResponseDeleteBlockedUserDto restoredUserDto = userService.deleteUser(userEntity);
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
     }
 
     @PutMapping("/{userUuid}")
-    public ResponseEntity blockUser(@PathVariable String userUuid){
+    public ResponseEntity blockUser(@PathVariable String userUuid) {
         UserEntity userEntity = validService.checkIfUserExists(userUuid);
         ResponseDeleteBlockedUserDto restoredUserDto = userService.blockUser(userEntity);
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
     }
 
     @PutMapping("/role/add/{userUuid}/{role}")
-    public ResponseEntity addRoleToUser(@PathVariable String userUuid, @PathVariable Roles role){
+    public ResponseEntity addRoleToUser(@PathVariable String userUuid, @PathVariable Roles role) {
         UserEntity userEntity = validService.checkIfUserExists(userUuid);
         ResponseUserDto restoredUserDto = userService.addRoleToUser(userEntity, role);
+        return new ResponseEntity(restoredUserDto, HttpStatus.OK);
+    }
+
+    @PutMapping("role/delete/{userUuid}/{role}")
+    public ResponseEntity deleteRoleFromUser(@PathVariable String userUuid,
+                                             @PathVariable Roles role) {
+        UserEntity userEntity = validService.checkIfUserExists(userUuid);
+        ResponseUserDto restoredUserDto = userService.deleteRoleFromUser(userEntity, role);
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
     }
 }

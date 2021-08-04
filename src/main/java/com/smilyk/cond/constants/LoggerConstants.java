@@ -17,4 +17,6 @@ public abstract class LoggerConstants {
     public static final String SOMETHING_WAS_WRONG = " something was wrong ";
     public static final String WAS_ADD = " was add ";
     public static final String HAS_ROLE = " has role: ";
+    public static final String HAS_NO_ROLE = " has no role " ;
+    public static final String WAS_DELETED = " was deleted ";
 }

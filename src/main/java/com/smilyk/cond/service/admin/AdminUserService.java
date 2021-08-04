@@ -14,4 +14,6 @@ public interface AdminUserService {
     ResponseDeleteBlockedUserDto blockUser(UserEntity userEntity);
 
     ResponseUserDto addRoleToUser(UserEntity userEntity, Roles role);
+
+    ResponseUserDto deleteRoleFromUser(UserEntity userEntity, Roles role);
 }
