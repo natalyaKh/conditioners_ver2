@@ -23,19 +23,19 @@ public class ManagerUserController {
     @Autowired
     ValidationService validService;
     @Autowired
-    GeneralUserService generalUserService;
+    GeneralUserService generalService;
 
     @GetMapping("/{userUuid}")
     public ResponseEntity getUserByUuid(@PathVariable String userUuid){
         UserEntity userEntity = validService.checkIfUserExists(userUuid);
-        ResponseUserDto restoredUserDto = generalUserService.getUserByUuid(userEntity);
+        ResponseUserDto restoredUserDto = generalService.getUserByUuid(userEntity);
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
     }
 
     @PutMapping("/{userUuid}")
     public ResponseEntity updateUserByUuid(@RequestBody @Valid UpdateUserDto updateUserDto){
         UserEntity userEntity = validService.checkIfUserExists(updateUserDto.getUserUuid());
-        ResponseUserDto restoredUserDto = generalUserService.updateUserByUuid(userEntity, updateUserDto);
+        ResponseUserDto restoredUserDto = generalService.updateUserByUuid(userEntity, updateUserDto);
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
     }
 
