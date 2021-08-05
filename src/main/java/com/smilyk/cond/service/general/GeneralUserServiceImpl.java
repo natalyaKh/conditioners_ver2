@@ -46,14 +46,6 @@ public class GeneralUserServiceImpl implements GeneralUserService {
         return responseUserDtoList;
     }
 
-    public ResponseUserDto userEntityToResponseUserDto(UserEntity restoredUser) {
-        ResponseUserDto responseUserDto = modelMapper.map(restoredUser, ResponseUserDto.class);
-        List<String> usersRoles = restoredUser.getRoles().stream().map(RoleEntity::getName)
-            .collect(Collectors.toList());
-        responseUserDto.setRoles(usersRoles);
-        return responseUserDto;
-    }
-
     @Override
     public ResponseUserDto updateUserByUuid(UserEntity userEntity, UpdateUserDto updateUserDto) {
         userEntity = checkFieldsForUpdatedUser(userEntity, updateUserDto);
@@ -64,7 +56,15 @@ public class GeneralUserServiceImpl implements GeneralUserService {
         return responseUserDto;
     }
 
-    private UserEntity checkFieldsForUpdatedUser(UserEntity userEntity, UpdateUserDto updateUserDto) {
+    public ResponseUserDto userEntityToResponseUserDto(UserEntity restoredUser) {
+        ResponseUserDto responseUserDto = modelMapper.map(restoredUser, ResponseUserDto.class);
+        List<String> usersRoles = restoredUser.getRoles().stream().map(RoleEntity::getName)
+            .collect(Collectors.toList());
+        responseUserDto.setRoles(usersRoles);
+        return responseUserDto;
+    }
+
+    UserEntity checkFieldsForUpdatedUser(UserEntity userEntity, UpdateUserDto updateUserDto) {
         if (updateUserDto.getFirstName() != null) {
             userEntity.setFirstName(updateUserDto.getFirstName());
         }
