@@ -31,6 +31,12 @@ public class InitialRolesAuthoritiesSetup {
     final UserEntityRepository userRepository;
     final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /**
+     * @param authorityRepository
+     * @param roleRepository
+     * @param userRepository
+     * @param bCryptPasswordEncoder
+     */
     public InitialRolesAuthoritiesSetup(AuthorityRepository authorityRepository, RoleRepository roleRepository,
                                         UserEntityRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.authorityRepository = authorityRepository;
@@ -39,6 +45,10 @@ public class InitialRolesAuthoritiesSetup {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    /**
+     * method that wait for event and create default roles with list of authorities
+     * @param event
+     */
     @EventListener
     @Transactional
     public void onApplicationEvent(ApplicationReadyEvent event) {
@@ -58,6 +68,12 @@ public class InitialRolesAuthoritiesSetup {
             writeAuthority));
     }
 
+    /**
+     * method that create default Role
+     * @param name
+     * @param authorityEntities
+     * @return
+     */
     public RoleEntity createRole(String name, Collection<AuthorityEntity> authorityEntities) {
         RoleEntity roleEntity = roleRepository.findByName(name);
         if (roleEntity == null) {
@@ -69,6 +85,11 @@ public class InitialRolesAuthoritiesSetup {
 
     }
 
+    /**
+     * method that create default Authority
+     * @param name
+     * @return
+     */
     public AuthorityEntity createAuthority(String name) {
         AuthorityEntity authorityEntity = authorityRepository.findByName(name);
         if (authorityEntity == null) {

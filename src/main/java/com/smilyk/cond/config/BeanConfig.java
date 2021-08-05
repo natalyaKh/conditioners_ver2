@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class BeanConfig {
     /**
      * bean that create BCryptPasswordEncoder Bean
-     * @return new {@link BCryptPasswordEncoder()}
+     * @return new {@link BCryptPasswordEncoder}
      */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {

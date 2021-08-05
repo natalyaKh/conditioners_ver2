@@ -38,8 +38,8 @@ public class AdminUserController {
      * methods that create {@link UserEntity}
      * method can throw {@link InvalidUserException} with {@link HttpStatus}
      * 409.CONFLICT if user exists in DB
-     * @param userDto
-     * @return
+     * @param userDto {@link UserDto}
+     * @return {@link ResponseUserDto}
      */
     // TODO: 01/08/2021 Admin only
     @PostMapping
@@ -53,7 +53,7 @@ public class AdminUserController {
      * method that get specific user from DB
      * method can throw {@link com.smilyk.cond.exceptions.ObjectNotFoundException} with {@link HttpStatus}
      * 410.CONE. if user not exists in DB
-     * @param userUuid
+     * @param userUuid unique users id
      * @return {@link ResponseUserDto} by uuid of user
      */
     @GetMapping("/{userUuid}")
@@ -92,7 +92,7 @@ public class AdminUserController {
      * method can throw {@link com.smilyk.cond.exceptions.ObjectNotFoundException} with {@link HttpStatus}
      * 410.CONE. if user not exists in DB
      * @param userUuid
-     * return {@link ResponseDeleteBlockedUserDto}
+     * @return {@link ResponseDeleteBlockedUserDto}
      */
     @PutMapping("/{userUuid}")
     public ResponseEntity blockUser(@PathVariable String userUuid) {
@@ -121,8 +121,8 @@ public class AdminUserController {
      * method that delete role from specific user
      * method can throw {@link com.smilyk.cond.exceptions.ObjectNotFoundException} with {@link HttpStatus}
      * 410.CONE. if user not exists in DB
-     * @param userUuid
-     * @param role
+     * @param userUuid {@link UserDto}
+     * @param role {@link Roles}
      * @return {@link ResponseUserDto}
      */
     @PutMapping("role/delete/{userUuid}/{role}")
@@ -138,7 +138,7 @@ public class AdminUserController {
      * method can throw {@link com.smilyk.cond.exceptions.ObjectNotFoundException} with {@link HttpStatus}
      * 410.CONE. if user not exists in DB
      * @param updateUserDto
-     * @return
+     * @return {@link ResponseUserDto}
      */
     @PutMapping("/{userUuid}")
     public ResponseEntity updateUserByUuid(@RequestBody @Valid UpdateUserDto updateUserDto){

@@ -11,6 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ConditionersVer2Application {
 
+    /**
+     * main method
+     * @param args
+     */
     public static void main(String[] args) {
         SpringApplication.run(ConditionersVer2Application.class, args);
     }
