@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 /**
@@ -32,12 +33,20 @@ public class ManagerUserController {
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
     }
 
+    @GetMapping()
+    public ResponseEntity getAllUsers(){
+        List<ResponseUserDto>  userEntityList =generalService.getAllUsers();
+        return new ResponseEntity(userEntityList, HttpStatus.OK);
+    }
+
     @PutMapping("/{userUuid}")
     public ResponseEntity updateUserByUuid(@RequestBody @Valid UpdateUserDto updateUserDto){
         UserEntity userEntity = validService.checkIfUserExists(updateUserDto.getUserUuid());
         ResponseUserDto restoredUserDto = generalService.updateUserByUuid(userEntity, updateUserDto);
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
     }
+
+
 
 
 }

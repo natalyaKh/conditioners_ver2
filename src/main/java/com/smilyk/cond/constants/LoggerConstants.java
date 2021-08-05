@@ -21,4 +21,5 @@ public abstract class LoggerConstants {
     public static final String WAS_DELETED = " was deleted ";
     public static final String WAS_SEND_TO_CLIENT = " was send to client ";
     public static final String WAS_UPDATED = " was updated ";
+    public static final String LIST_OF_USERS = " list of all users ";
 }

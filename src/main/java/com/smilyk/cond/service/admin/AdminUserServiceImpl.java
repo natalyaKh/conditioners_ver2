@@ -12,27 +12,32 @@ import com.smilyk.cond.model.RoleEntity;
 import com.smilyk.cond.model.UserEntity;
 import com.smilyk.cond.repo.RoleRepository;
 import com.smilyk.cond.repo.UserEntityRepository;
+import com.smilyk.cond.service.general.GeneralUserService;
+import com.smilyk.cond.service.general.GeneralUserServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class AdminUserServiceImpl implements AdminUserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminUserServiceImpl.class);
     ModelMapper modelMapper = new ModelMapper();
+    final GeneralUserServiceImpl generalService;
     final UserEntityRepository userRepository;
     final RoleRepository roleRepository;
     final BCryptPasswordEncoder bCryptPasswordEncoder;
     final InitialRolesAuthoritiesSetup initialUsersSetup;
 
-    public AdminUserServiceImpl(UserEntityRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder, InitialRolesAuthoritiesSetup initialUsersSetup) {
+    public AdminUserServiceImpl(GeneralUserServiceImpl generalService, UserEntityRepository userRepository,
+                                RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+                                InitialRolesAuthoritiesSetup initialUsersSetup) {
+        this.generalService = generalService;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -59,7 +64,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         LOGGER.info(LoggerConstants.USER_WITH_NAME + userDto.getFirstName() + " and " +
             LoggerConstants.USER_WITH_ROLES +
             userDto.getRoles() + LoggerConstants.CREATED);
-        return  userEntityToResponseUserDto(restoredUser);
+        return generalService.userEntityToResponseUserDto(restoredUser);
     }
 
     @Override
@@ -91,7 +96,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         Collection<RoleEntity> roles = userEntity.getRoles();
         if (roles.contains(roleEntity)) {
             throw new InvalidUserException(LoggerConstants.USER_WITH_NAME + userEntity.getFirstName()
-            + " " + userEntity.getSecondName() + LoggerConstants.HAS_ROLE + role.name());
+                + " " + userEntity.getSecondName() + LoggerConstants.HAS_ROLE + role.name());
         }
         roles.add(roleEntity);
         userEntity.setRoles(roles);
@@ -100,7 +105,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         LOGGER.info(LoggerConstants.ROLE + role.name() + LoggerConstants.WAS_ADD +
             LoggerConstants.USER_WITH_NAME +
             restoredUser.getFirstName() + " " + restoredUser.getSecondName());
-        return  userEntityToResponseUserDto(restoredUser);
+        return generalService.userEntityToResponseUserDto(restoredUser);
     }
 
     @Override
@@ -111,7 +116,7 @@ public class AdminUserServiceImpl implements AdminUserService {
                 LoggerConstants.NOT_FOUND_IN_DB);
         }
         Collection<RoleEntity> roles = userEntity.getRoles();
-        if (!roles.contains(roleEntity)){
+        if (!roles.contains(roleEntity)) {
             throw new InvalidUserException(LoggerConstants.USER_WITH_NAME + userEntity.getFirstName()
                 + " " + userEntity.getSecondName() + LoggerConstants.HAS_NO_ROLE + role.name());
         }
@@ -122,16 +127,16 @@ public class AdminUserServiceImpl implements AdminUserService {
         LOGGER.info(LoggerConstants.ROLE + role.name() + LoggerConstants.WAS_DELETED +
             LoggerConstants.USER_WITH_NAME +
             restoredUser.getFirstName() + " " + restoredUser.getSecondName());
-        return  userEntityToResponseUserDto(restoredUser);
+        return generalService.userEntityToResponseUserDto(restoredUser);
 
     }
-    private ResponseUserDto userEntityToResponseUserDto(UserEntity restoredUser) {
-        ResponseUserDto responseUserDto = modelMapper.map(restoredUser, ResponseUserDto.class);
-        List<String> usersRoles = restoredUser.getRoles().stream().map(RoleEntity::getName)
-            .collect(Collectors.toList());
-        responseUserDto.setRoles(usersRoles);
-        return responseUserDto;
-    }
+//    private ResponseUserDto userEntityToResponseUserDto(UserEntity restoredUser) {
+//        ResponseUserDto responseUserDto = modelMapper.map(restoredUser, ResponseUserDto.class);
+//        List<String> usersRoles = restoredUser.getRoles().stream().map(RoleEntity::getName)
+//            .collect(Collectors.toList());
+//        responseUserDto.setRoles(usersRoles);
+//        return responseUserDto;
+//    }
 
     private void checkSavingUserWithChanges(UserEntity restoredUser, String s) {
         if (restoredUser.equals(null)) {

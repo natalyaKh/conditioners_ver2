@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("ver1/admin")
@@ -41,6 +42,12 @@ public class AdminUserController {
         UserEntity userEntity = validService.checkIfUserExists(userUuid);
         ResponseUserDto restoredUserDto = generalService.getUserByUuid(userEntity);
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity getAllUsers(){
+        List<ResponseUserDto> userEntityList =generalService.getAllUsers();
+        return new ResponseEntity(userEntityList, HttpStatus.OK);
     }
 
     @DeleteMapping("/{userUuid}")

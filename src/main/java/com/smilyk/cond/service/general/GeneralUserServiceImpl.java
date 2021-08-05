@@ -3,6 +3,7 @@ package com.smilyk.cond.service.general;
 import com.smilyk.cond.constants.LoggerConstants;
 import com.smilyk.cond.dto.ResponseUserDto;
 import com.smilyk.cond.dto.UpdateUserDto;
+import com.smilyk.cond.model.RoleEntity;
 import com.smilyk.cond.model.UserEntity;
 import com.smilyk.cond.repo.UserEntityRepository;
 import com.smilyk.cond.service.admin.AdminUserServiceImpl;
@@ -10,6 +11,9 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GeneralUserServiceImpl implements GeneralUserService {
@@ -26,6 +30,23 @@ public class GeneralUserServiceImpl implements GeneralUserService {
         ResponseUserDto responseUserDto = modelMapper.map(userEntity, ResponseUserDto.class);
         LOGGER.info(LoggerConstants.USER_WITH_EMAIL + userEntity.getUserEmail() +
             LoggerConstants.WAS_SEND_TO_CLIENT);
+        return responseUserDto;
+    }
+
+    @Override
+    public List<ResponseUserDto> getAllUsers() {
+        List<UserEntity> userEntityList = userRepository.findAll();
+        LOGGER.info(LoggerConstants.LIST_OF_USERS + LoggerConstants.WAS_SEND_TO_CLIENT);
+        List<ResponseUserDto> responseUserDtoList = userEntityList.stream().map(this::userEntityToResponseUserDto)
+            .collect(Collectors.toList());
+        return responseUserDtoList;
+    }
+
+    public ResponseUserDto userEntityToResponseUserDto(UserEntity restoredUser) {
+        ResponseUserDto responseUserDto = modelMapper.map(restoredUser, ResponseUserDto.class);
+        List<String> usersRoles = restoredUser.getRoles().stream().map(RoleEntity::getName)
+            .collect(Collectors.toList());
+        responseUserDto.setRoles(usersRoles);
         return responseUserDto;
     }
 
