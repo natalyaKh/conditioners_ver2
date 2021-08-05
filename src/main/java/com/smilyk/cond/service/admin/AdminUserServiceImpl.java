@@ -133,13 +133,6 @@ public class AdminUserServiceImpl implements AdminUserService {
         return generalService.userEntityToResponseUserDto(restoredUser);
 
     }
-//    private ResponseUserDto userEntityToResponseUserDto(UserEntity restoredUser) {
-//        ResponseUserDto responseUserDto = modelMapper.map(restoredUser, ResponseUserDto.class);
-//        List<String> usersRoles = restoredUser.getRoles().stream().map(RoleEntity::getName)
-//            .collect(Collectors.toList());
-//        responseUserDto.setRoles(usersRoles);
-//        return responseUserDto;
-//    }
 
     private void checkSavingUserWithChanges(UserEntity restoredUser, String s) {
         if (restoredUser.equals(null)) {
