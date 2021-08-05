@@ -19,4 +19,6 @@ public abstract class LoggerConstants {
     public static final String HAS_ROLE = " has role: ";
     public static final String HAS_NO_ROLE = " has no role " ;
     public static final String WAS_DELETED = " was deleted ";
+    public static final String WAS_SEND_TO_CLIENT = " was send to client ";
+    public static final String WAS_UPDATED = " was updated ";
 }
