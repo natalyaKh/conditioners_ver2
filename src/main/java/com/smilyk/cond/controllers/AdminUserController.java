@@ -140,7 +140,7 @@ public class AdminUserController {
      * @param updateUserDto
      * @return {@link ResponseUserDto}
      */
-    @PutMapping("/{userUuid}")
+    @PutMapping("update/{userUuid}")
     public ResponseEntity updateUserByUuid(@RequestBody @Valid UpdateUserDto updateUserDto){
         UserEntity userEntity = validService.checkIfUserExists(updateUserDto.getUserUuid());
         ResponseUserDto restoredUserDto = generalService.updateUserByUuid(userEntity, updateUserDto);
