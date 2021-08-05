@@ -5,7 +5,6 @@ import com.smilyk.cond.exceptions.InvalidUserException;
 import com.smilyk.cond.exceptions.ObjectNotFoundException;
 import com.smilyk.cond.model.UserEntity;
 import com.smilyk.cond.repo.UserEntityRepository;
-import com.smilyk.cond.service.admin.AdminUserService;
 import com.smilyk.cond.service.admin.AdminUserServiceImpl;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;

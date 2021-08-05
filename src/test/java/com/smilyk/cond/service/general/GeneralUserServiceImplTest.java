@@ -47,6 +47,10 @@ class GeneralUserServiceImplTest {
     private UpdateUserDto updateUserDto;
     private UserEntity userEntity;
     private UserEntity updatedUserEntity;
+    private List<UserEntity> listUserEntity = new ArrayList<>();
+    private ResponseUserDto responseUserDto;
+    private ResponseUserDto updatedResponseUserDto;
+    private List<ResponseUserDto> responseUserDtoList = new ArrayList<>();
 
     @InjectMocks
     GeneralUserServiceImpl generalService;
@@ -54,10 +58,6 @@ class GeneralUserServiceImplTest {
     private UserEntityRepository userRepository;
 
 
-    private List<UserEntity> listUserEntity = new ArrayList<>();
-    private ResponseUserDto responseUserDto;
-    private ResponseUserDto updatedResponseUserDto;
-    private List<ResponseUserDto> responseUserDtoList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
