@@ -168,7 +168,7 @@ class AdminUserServiceImplTest {
     void blockUser() {
 //      UserEntity restoredUser = userRepository.save(userEntity);
         when(userRepository.save(any(UserEntity.class))).thenReturn(blockedUserEntity);
-        ResponseDeleteBlockedUserDto blockedUser = adminService.deleteUser(userEntity);
+        ResponseDeleteBlockedUserDto blockedUser = adminService.blockUser(userEntity);
 
         assertNotNull(blockedUser);
         assertEquals(userEntity.getFirstName(), blockedUser.getFirstName());
@@ -205,4 +205,6 @@ class AdminUserServiceImplTest {
 //      checking how times called method
         verify(userRepository, times(1)).save(any(UserEntity.class));
     }
+
+
 }
