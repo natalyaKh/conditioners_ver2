@@ -10,6 +10,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
+/**
+ * UserDto class
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

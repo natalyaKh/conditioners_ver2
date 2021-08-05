@@ -3,6 +3,9 @@ package com.smilyk.cond.model;
 import javax.persistence.*;
 import java.util.Collection;
 
+/**
+ * UserEntity class extends BaseEntity
+ */
 @Entity
 @Table(name = "users")
 public class UserEntity extends BaseEntity{

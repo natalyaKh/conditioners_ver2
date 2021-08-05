@@ -12,7 +12,6 @@ import com.smilyk.cond.model.RoleEntity;
 import com.smilyk.cond.model.UserEntity;
 import com.smilyk.cond.repo.RoleRepository;
 import com.smilyk.cond.repo.UserEntityRepository;
-import com.smilyk.cond.service.general.GeneralUserService;
 import com.smilyk.cond.service.general.GeneralUserServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -24,6 +23,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
+/**
+ * implementation of {@link AdminUserService}
+ * class contains methods for permit ADMINISTRATOR only
+ */
 @Service
 public class AdminUserServiceImpl implements AdminUserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminUserServiceImpl.class);

@@ -1,5 +1,8 @@
 package com.smilyk.cond.constants;
 
+/**
+ * class that contains Constants for Logger and Exception Handler
+ */
 public abstract class LoggerConstants {
     public static final String USER_WITH_EMAIL = "user with email: ";
     public static final String USER_WITH_UUID = "user with uuid: ";;

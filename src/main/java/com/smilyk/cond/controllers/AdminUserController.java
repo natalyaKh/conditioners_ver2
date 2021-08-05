@@ -5,6 +5,7 @@ import com.smilyk.cond.dto.ResponseUserDto;
 import com.smilyk.cond.dto.UpdateUserDto;
 import com.smilyk.cond.dto.UserDto;
 import com.smilyk.cond.enums.Roles;
+import com.smilyk.cond.exceptions.InvalidUserException;
 import com.smilyk.cond.model.UserEntity;
 import com.smilyk.cond.service.admin.AdminUserService;
 import com.smilyk.cond.service.general.GeneralUserService;
@@ -18,6 +19,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * class Controller for users with Role = ROLE_ADMIN
+ * all other users don have access to this EndPoints
+ */
 @RestController
 @RequestMapping("ver1/admin")
 public class AdminUserController {
@@ -29,6 +34,13 @@ public class AdminUserController {
     @Autowired
     ValidationService validService;
 
+    /**
+     * methods that create {@link UserEntity}
+     * method can throw {@link InvalidUserException} with {@link HttpStatus}
+     * 409.CONFLICT if user exists in DB
+     * @param userDto
+     * @return
+     */
     // TODO: 01/08/2021 Admin only
     @PostMapping
     public ResponseEntity createUser(@RequestBody UserDto userDto) {
@@ -37,6 +49,13 @@ public class AdminUserController {
         return new ResponseEntity(restoredUserDto, HttpStatus.CREATED);
     }
 
+    /**
+     * method that get specific user from DB
+     * method can throw {@link com.smilyk.cond.exceptions.ObjectNotFoundException} with {@link HttpStatus}
+     * 410.CONE. if user not exists in DB
+     * @param userUuid
+     * @return {@link ResponseUserDto} by uuid of user
+     */
     @GetMapping("/{userUuid}")
     public ResponseEntity getUserByUuid(@PathVariable String userUuid){
         UserEntity userEntity = validService.checkIfUserExists(userUuid);
@@ -44,12 +63,23 @@ public class AdminUserController {
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
     }
 
+    /**
+     * method that return all users from DB
+     * @return  list of {@link ResponseUserDto}
+     */
     @GetMapping
     public ResponseEntity getAllUsers(){
         List<ResponseUserDto> userEntityList =generalService.getAllUsers();
         return new ResponseEntity(userEntityList, HttpStatus.OK);
     }
 
+    /**
+     * method that delete specific user and return {@link ResponseDeleteBlockedUserDto}
+     * method can throw {@link com.smilyk.cond.exceptions.ObjectNotFoundException} with {@link HttpStatus}
+     * 410.CONE. if user not exists in DB
+     * @param userUuid
+     * @return {@link ResponseDeleteBlockedUserDto}
+     */
     @DeleteMapping("/{userUuid}")
     public ResponseEntity deleteUser(@PathVariable String userUuid) {
         UserEntity userEntity = validService.checkIfUserExists(userUuid);
@@ -57,6 +87,13 @@ public class AdminUserController {
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
     }
 
+    /**
+     * method that block specific user
+     * method can throw {@link com.smilyk.cond.exceptions.ObjectNotFoundException} with {@link HttpStatus}
+     * 410.CONE. if user not exists in DB
+     * @param userUuid
+     * return {@link ResponseDeleteBlockedUserDto}
+     */
     @PutMapping("/{userUuid}")
     public ResponseEntity blockUser(@PathVariable String userUuid) {
         UserEntity userEntity = validService.checkIfUserExists(userUuid);
@@ -64,6 +101,14 @@ public class AdminUserController {
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
     }
 
+    /**
+     * method that add role to specific user
+     * method can throw {@link com.smilyk.cond.exceptions.ObjectNotFoundException} with {@link HttpStatus}
+     * 410.CONE. if user not exists in DB
+     * @param userUuid
+     * @param role
+     * @return {@link ResponseUserDto}
+     */
     @PutMapping("/role/add/{userUuid}/{role}")
     public ResponseEntity addRoleToUser(@PathVariable String userUuid, @PathVariable Roles role) {
         UserEntity userEntity = validService.checkIfUserExists(userUuid);
@@ -71,6 +116,15 @@ public class AdminUserController {
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
     }
 
+
+    /**
+     * method that delete role from specific user
+     * method can throw {@link com.smilyk.cond.exceptions.ObjectNotFoundException} with {@link HttpStatus}
+     * 410.CONE. if user not exists in DB
+     * @param userUuid
+     * @param role
+     * @return {@link ResponseUserDto}
+     */
     @PutMapping("role/delete/{userUuid}/{role}")
     public ResponseEntity deleteRoleFromUser(@PathVariable String userUuid,
                                              @PathVariable Roles role) {
@@ -79,6 +133,13 @@ public class AdminUserController {
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
     }
 
+    /**
+     * method that update specific user
+     * method can throw {@link com.smilyk.cond.exceptions.ObjectNotFoundException} with {@link HttpStatus}
+     * 410.CONE. if user not exists in DB
+     * @param updateUserDto
+     * @return
+     */
     @PutMapping("/{userUuid}")
     public ResponseEntity updateUserByUuid(@RequestBody @Valid UpdateUserDto updateUserDto){
         UserEntity userEntity = validService.checkIfUserExists(updateUserDto.getUserUuid());

@@ -3,6 +3,9 @@ package com.smilyk.cond.model;
 import javax.persistence.*;
 import java.util.Collection;
 
+/**
+ * RoleEntity class extends BaseEntity
+ */
 @Table(name = "roles")
 @Entity
 public class RoleEntity extends BaseEntity {

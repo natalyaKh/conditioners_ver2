@@ -15,7 +15,8 @@ import java.util.List;
 
 
 /**
- * Access in this controller is possible ONLY from usersProfile
+ * class Controller for users with Role = ROLE_MANAGER
+ * all other users don have access to this EndPoints
  */
 @RestController
 @RequestMapping("ver1/manager")
@@ -26,6 +27,13 @@ public class ManagerUserController {
     @Autowired
     GeneralUserService generalService;
 
+    /**
+     * method that get specific user from DB
+     * method can throw {@link com.smilyk.cond.exceptions.ObjectNotFoundException} with {@link HttpStatus}
+     * 410.CONE. if user not exists in DB
+     * @param userUuid
+     * @return {@link ResponseUserDto} by uuid of user
+     */
     @GetMapping("/{userUuid}")
     public ResponseEntity getUserByUuid(@PathVariable String userUuid){
         UserEntity userEntity = validService.checkIfUserExists(userUuid);
@@ -33,12 +41,23 @@ public class ManagerUserController {
         return new ResponseEntity(restoredUserDto, HttpStatus.OK);
     }
 
+    /**
+     * method that return all users from DB
+     * @return  list of {@link ResponseUserDto}
+     */
     @GetMapping()
     public ResponseEntity getAllUsers(){
         List<ResponseUserDto>  userEntityList =generalService.getAllUsers();
         return new ResponseEntity(userEntityList, HttpStatus.OK);
     }
 
+    /**
+     * method that update specific user
+     * method can throw {@link com.smilyk.cond.exceptions.ObjectNotFoundException} with {@link HttpStatus}
+     * 410.CONE. if user not exists in DB
+     * @param updateUserDto
+     * @return
+     */
     @PutMapping("/{userUuid}")
     public ResponseEntity updateUserByUuid(@RequestBody @Valid UpdateUserDto updateUserDto){
         UserEntity userEntity = validService.checkIfUserExists(updateUserDto.getUserUuid());

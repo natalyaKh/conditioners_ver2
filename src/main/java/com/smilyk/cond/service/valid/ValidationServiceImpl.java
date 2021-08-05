@@ -5,6 +5,7 @@ import com.smilyk.cond.exceptions.InvalidUserException;
 import com.smilyk.cond.exceptions.ObjectNotFoundException;
 import com.smilyk.cond.model.UserEntity;
 import com.smilyk.cond.repo.UserEntityRepository;
+import com.smilyk.cond.service.admin.AdminUserService;
 import com.smilyk.cond.service.admin.AdminUserServiceImpl;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -13,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+/**
+ * implementation of {@link ValidationService}
+ * class contains methods for validation objects from API
+ */
 @Service
 public class ValidationServiceImpl implements ValidationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminUserServiceImpl.class);

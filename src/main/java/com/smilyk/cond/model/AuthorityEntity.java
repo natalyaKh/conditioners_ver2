@@ -6,6 +6,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.Collection;
 
+/**
+ * AuthorityEntity class extends BaseEntity
+ */
 @Table(name = "authorities")
 @Entity
 public class AuthorityEntity extends BaseEntity{

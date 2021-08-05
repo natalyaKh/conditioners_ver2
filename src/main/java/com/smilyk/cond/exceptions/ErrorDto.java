@@ -5,6 +5,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * ErrorDto class
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

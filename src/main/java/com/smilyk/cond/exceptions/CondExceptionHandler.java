@@ -17,6 +17,13 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Exception Handler
+ * throw exceptions ->
+ * HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.BAD_REQUEST,
+ * HttpStatus.CONFLICT (if saving object exists in DB)
+ * HttpStatus.GONE (if searching object not found in DB)
+ */
 @RestControllerAdvice
 public class CondExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(CondExceptionHandler.class);

@@ -6,6 +6,7 @@ import com.smilyk.cond.dto.UpdateUserDto;
 import com.smilyk.cond.model.RoleEntity;
 import com.smilyk.cond.model.UserEntity;
 import com.smilyk.cond.repo.UserEntityRepository;
+import com.smilyk.cond.service.admin.AdminUserService;
 import com.smilyk.cond.service.admin.AdminUserServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -14,7 +15,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * implementation of {@link GeneralUserService}
+ * class contains methods for permit some roles
+ */
 @Service
 public class GeneralUserServiceImpl implements GeneralUserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminUserServiceImpl.class);

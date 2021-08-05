@@ -16,6 +16,14 @@ import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * This is setup class.
+ * Class crate roles and authorities for users
+ * By default in appl uses:
+ * adminRole - authorities read, write, delete
+ * managerRole - authorities read, write(for some methods)
+ * workerRole - authorities read(for some methods), write (for some methods)
+ */
 @Component
 public class InitialRolesAuthoritiesSetup {
     final AuthorityRepository authorityRepository;

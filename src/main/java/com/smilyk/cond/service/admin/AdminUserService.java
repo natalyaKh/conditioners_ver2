@@ -6,6 +6,9 @@ import com.smilyk.cond.dto.UserDto;
 import com.smilyk.cond.enums.Roles;
 import com.smilyk.cond.model.UserEntity;
 
+/**
+ * Service for Administrator. This is interface, his impl -> {@link AdminUserServiceImpl}
+ */
 public interface AdminUserService {
     ResponseUserDto createUser(UserDto userDto);
 

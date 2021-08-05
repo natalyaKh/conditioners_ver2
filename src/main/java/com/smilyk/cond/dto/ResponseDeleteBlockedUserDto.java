@@ -2,6 +2,9 @@ package com.smilyk.cond.dto;
 
 import lombok.*;
 
+/**
+ * ResponseDeleteBlockedUserDto class
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
