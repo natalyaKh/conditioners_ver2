@@ -17,7 +17,7 @@ import javax.validation.Valid;
  * class Controller for users with Role = ROLE_WORKER
  * all other users don have access to this EndPoints
  */
-@PreAuthorize("hasRole('ROLE_WORKER')")
+
 @RestController
 @RequestMapping("ver1/profile")
 public class ProfileUserController {
@@ -33,6 +33,7 @@ public class ProfileUserController {
      * @param userUuid
      * @return {@link ResponseUserDto} by uuid of user
      */
+    @PreAuthorize("hasRole('ROLE_WORKER') and #userUuid == principal.id")
     @GetMapping("/{userUuid}")
     public ResponseEntity getUserByUuid(@PathVariable String userUuid){
         UserEntity userEntity = validService.checkIfUserExists(userUuid);

@@ -15,8 +15,19 @@ import java.util.List;
 public class UserPrincipal implements UserDetails {
     private UserEntity user;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    private String id;
+
     public UserPrincipal(UserEntity user) {
         this.user = user;
+        this.id = user.getUuidUser();
     }
 
     public UserPrincipal() {
