@@ -1,11 +1,14 @@
 package com.smilyk.cond.model;
 
+import lombok.Builder;
+
 import javax.persistence.*;
 import java.util.Collection;
 
 /**
  * UserEntity class extends BaseEntity
  */
+@Builder
 @Entity
 @Table(name = "users")
 public class UserEntity extends BaseEntity{

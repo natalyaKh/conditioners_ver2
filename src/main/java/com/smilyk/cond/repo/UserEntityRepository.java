@@ -15,4 +15,6 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
                                                            boolean deleted, boolean blocked);
 
     Optional<Object> findUserByUuidUserAndDeletedAndBlocked(String userUuid, boolean b, boolean b1);
+
+    UserEntity findUserByUserEmail(String email);
 }
