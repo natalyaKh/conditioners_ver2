@@ -8,6 +8,7 @@ import com.smilyk.cond.service.valid.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
  * class Controller for users with Role = ROLE_WORKER
  * all other users don have access to this EndPoints
  */
+@PreAuthorize("hasRole('ROLE_WORKER')")
 @RestController
 @RequestMapping("ver1/profile")
 public class ProfileUserController {
