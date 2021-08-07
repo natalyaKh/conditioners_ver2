@@ -1,16 +1,16 @@
-package com.smilyk.cond.security;
+package com.smilyk.cond.security.filtres;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smilyk.cond.constants.SecurityConstants;
-import com.smilyk.cond.model.UserEntity;
 import com.smilyk.cond.repo.UserEntityRepository;
+import com.smilyk.cond.security.modelAndDto.LoginRequestDto;
+import com.smilyk.cond.security.modelAndDto.UserPrincipal;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;

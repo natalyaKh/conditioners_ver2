@@ -5,6 +5,8 @@ import com.smilyk.cond.service.admin.AdminUserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -28,17 +31,41 @@ import java.util.Map;
 public class CondExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(CondExceptionHandler.class);
 
-    //   all exceptions
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AccessDeniedException.class)
+    public ErrorDto securityAccessDeniedHandler(Exception ex) {
+        LOGGER.warn(ex.getMessage());
+        return ErrorDto.builder()
+            .date(LocalDateTime.now())
+            .error(ex.getMessage())
+            .status(HttpStatus.FORBIDDEN.value())
+            .build();
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(AuthenticationException.class)
+    public ErrorDto securityAuthHandler(Exception ex) {
+        LOGGER.warn(ex.getMessage());
+        return ErrorDto.builder()
+            .date(LocalDateTime.now())
+            .error(ex.getMessage())
+            .status(HttpStatus.UNAUTHORIZED.value())
+            .build();
+    }
+
+
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ErrorDto exceptionHandler(Exception ex) {
         LOGGER.warn(ex.getMessage());
+        LOGGER.warn(ex.getClass().getName());
         return ErrorDto.builder()
             .date(LocalDateTime.now())
             .error(ex.getMessage())
             .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
             .build();
     }
+
 
     //    validExceptions
     @ResponseStatus(HttpStatus.BAD_REQUEST)

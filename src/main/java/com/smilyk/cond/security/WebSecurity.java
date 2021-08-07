@@ -1,6 +1,8 @@
 package com.smilyk.cond.security;
 
 import com.smilyk.cond.repo.UserEntityRepository;
+import com.smilyk.cond.security.filtres.AuthenticationFilter;
+import com.smilyk.cond.security.service.UserSecurityService;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

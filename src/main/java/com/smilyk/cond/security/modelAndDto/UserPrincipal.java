@@ -1,8 +1,9 @@
-package com.smilyk.cond.security;
+package com.smilyk.cond.security.modelAndDto;
 
 import com.smilyk.cond.model.AuthorityEntity;
 import com.smilyk.cond.model.RoleEntity;
 import com.smilyk.cond.model.UserEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -72,7 +73,6 @@ public class UserPrincipal implements UserDetails {
      */
     @Override
     public boolean isAccountNonLocked() {
-        System.err.println(!this.user.getBlocked());
         return !this.user.getBlocked();
     }
 
@@ -91,6 +91,7 @@ public class UserPrincipal implements UserDetails {
      */
     @Override
     public boolean isEnabled() {
+
         return this.user.getConfirmEmail();
     }
 }

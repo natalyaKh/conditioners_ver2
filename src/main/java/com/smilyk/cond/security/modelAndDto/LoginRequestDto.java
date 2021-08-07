@@ -1,4 +1,4 @@
-package com.smilyk.cond.security;
+package com.smilyk.cond.security.modelAndDto;
 
 import lombok.*;
 

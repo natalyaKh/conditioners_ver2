@@ -1,8 +1,9 @@
-package com.smilyk.cond.security;
+package com.smilyk.cond.security.service;
 
 import com.smilyk.cond.constants.LoggerConstants;
 import com.smilyk.cond.model.UserEntity;
 import com.smilyk.cond.repo.UserEntityRepository;
+import com.smilyk.cond.security.modelAndDto.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
