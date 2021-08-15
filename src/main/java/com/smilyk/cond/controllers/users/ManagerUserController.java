@@ -1,4 +1,4 @@
-package com.smilyk.cond.controllers;
+package com.smilyk.cond.controllers.users;
 
 import com.smilyk.cond.dto.ResponseUserDto;
 import com.smilyk.cond.dto.UpdateUserDto;
